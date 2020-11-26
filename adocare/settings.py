@@ -52,7 +52,8 @@ INSTALLED_APPS = [
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_AUTHENTICATION_METHOD = 'email' # 認証方法をメールアドレスにする
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None # Userモデルにusernameは無い
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username' # ここはNoneではなくusernameにする
 ACCOUNT_EMAIL_REQUIRED = True # メールアドレスを要求する
 ACCOUNT_USERNAME_REQUIRED = False
 
@@ -68,7 +69,7 @@ REST_FRAMEWORK = {
     'rest_framework.authentication.SessionAuthentication',
     'rest_framework.authentication.BasicAuthentication',
     'rest_framework.authentication.TokenAuthentication',
-   #'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    #'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
   ]
 }
 

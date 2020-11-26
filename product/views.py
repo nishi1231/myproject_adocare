@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import UserProfile, Doctor
-from .serializers import UserProfileSerializer, DoctorSerializer
+from .models import UserProfile, Doctor, Reservation, ReservationOtherChoice
+from .serializers import UserProfileSerializer, DoctorSerializer, ReservationSerializer, ReservationOtherChoiceSerializer
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
@@ -16,3 +16,16 @@ class UserProfile(generics.CreateAPIView):
 class DoctorList(generics.ListAPIView):
     queryset = Doctor.objects.all()
     serializer_class = DoctorSerializer
+
+
+class Reservation(generics.CreateAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+
+
+class ReservationOtherChoice(generics.CreateAPIView):
+    queryset = ReservationOtherChoice.objects.all()
+    serializer_class = ReservationOtherChoiceSerializer
+
+
+    
