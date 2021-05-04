@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from jsonfield import JSONField
 from django.conf import settings
 from django.utils import timezone
 
@@ -14,7 +15,7 @@ GENDER_CHOICES = [
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True) 
     user_name = models.CharField(blank=True,null=True,max_length=30,verbose_name='氏名', default='')
-    birthday = models.DateField(blank=True,null=True,default=timezone.now)
+    birthday = models.DateField(blank=True,null=True)
     gender = models.CharField(blank=True,null=True,verbose_name='性別', default='', max_length=1, choices=GENDER_CHOICES)
     insurance_image = models.ImageField(blank=True,null=True,upload_to='documents/', default='defo',verbose_name='保険証画像')
     insurance_symbol = models.IntegerField(blank=True,null=True,verbose_name='保険証記号',default=0, validators=[MinValueValidator(1), MaxValueValidator(100000000)])
@@ -53,6 +54,23 @@ class ReservationOtherChoice(models.Model):
     palpitations = models.BooleanField(default=True)
     stomachache = models.BooleanField(default=True)
     nausea = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+
+# 
+class DoctorReservationReception(models.Model):
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    day_of_the_week = models.JSONField(blank=True, null=True)
+    # 0:月,1:火,2:水,3:木,4:金,5:土,6:日
+    frequency = models.JSONField(blank=True, null=True)
+    # 0:営業日のみ毎日,1:1週間ごと,2:毎月
+    start_day = models.DateField(blank=True,null=True,verbose_name='受付開始日')
+    end_day = models.DateField(blank=True,null=True,verbose_name='受付終了日')
+    start_time = models.TimeField(blank=True,null=True,verbose_name='受付開始時間')
+    end_time = models.TimeField(blank=True,null=True,verbose_name='受付終了時間')
+    active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -8,4 +8,5 @@ urlpatterns = [
   path("doctorlist",views.DoctorList.as_view(), name="product"),
   path("reservation",views.Reservation.as_view(), name="product"),
   path("reservationotherchoice",views.ReservationOtherChoice.as_view(), name="product"),
+  path("doctorreservationreception",views.DoctorReservationReception.as_view(), name="product"),
 ]
