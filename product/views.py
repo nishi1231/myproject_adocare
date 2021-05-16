@@ -39,6 +39,7 @@ class DoctorReservationReception(generics.ListCreateAPIView):
     frequency_value = DoctorReservationReception.objects.values('frequency')
 
     frequency_value_list = list(frequency_value)
+    print(frequency_value_list)
 
 
     # todayをmodelの開始日で代入。
@@ -47,9 +48,9 @@ class DoctorReservationReception(generics.ListCreateAPIView):
     #　医師を選択するとリレーションされた予約日時がレスポンスを返すように。　https://selfnote.work/20200531/programming/django-rest-framework-basic7/
     
 
-    frequency1 = [{'frequency':'1'}]
-    frequency2 = [{'frequency':'2'}]
-    frequency3 = [{'frequency':'3'}]
+    frequency1 = [{'frequency':1}]
+    frequency2 = [{'frequency':2}]
+    frequency3 = [{'frequency':3}]
 
     if frequency_value_list == frequency1:
         reservation_frequency = 'B'

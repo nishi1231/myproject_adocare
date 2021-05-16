@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import environ
+
+env = environ.Env()
+
+env.read_env('.env')
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'e=gym_ealqp+wyt&@sa+a+l=tqwmpe43l_976dg%f&xzdrr@f&'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -119,7 +125,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    },
+    'new': #{
+        env.db(),
+        #'ENGINE': 'django.db.backends.mysql',
+        #'NAME': 'adocare',
+        #'USER': 'root', # パソコンにインストールしたMySQLのユーザー名
+        #'PASSWORD': '1231adotest', # 同上。そのパスワード。後で環境変数に格納する
+        #'HOST': 'localhost',
+        #'PORT': '3306',
+    #}
 }
 
 

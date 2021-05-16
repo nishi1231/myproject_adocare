@@ -59,7 +59,6 @@ class ReservationOtherChoice(models.Model):
 
 
 
-# 
 class DoctorReservationReception(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     day_of_the_week = models.JSONField(blank=True, null=True)
@@ -81,5 +80,5 @@ class DoctorReservationReception(models.Model):
         self.published_date = timezone.now()
         self.save()
 
-    def __str__(self):
-        return self.full_name
+    #def __str__(self):
+     #  return self.full_name
