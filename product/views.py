@@ -3,10 +3,13 @@ from .models import UserProfile, Doctor, Reservation, ReservationOtherChoice, Do
 from .serializers import UserProfileSerializer, DoctorSerializer, ReservationSerializer, ReservationOtherChoiceSerializer, DoctorReservationReceptionSerializer
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from pandas.io.json import json_normalize
+from datetime import datetime, date, time, timedelta
 
-# 日付取得のテストで記載
 import pandas as pd
 import numpy as np
+import pytz
+
 
 
 class UserProfile(generics.ListCreateAPIView):
@@ -36,17 +39,12 @@ class ReservationOtherChoice(generics.ListCreateAPIView):
 class DoctorReservationReception(generics.ListCreateAPIView):
     queryset = DoctorReservationReception.objects.all()
     serializer_class = DoctorReservationReceptionSerializer
+    start_day_value = DoctorReservationReception.objects.values('start_day')
+    end_day_value = DoctorReservationReception.objects.values('end_day')
     frequency_value = DoctorReservationReception.objects.values('frequency')
 
+
     frequency_value_list = list(frequency_value)
-    print(frequency_value_list)
-
-
-    # todayをmodelの開始日で代入。
-    # 14日先の日付けまで出す。隔週の場合、営業日などでperiodsを変換。
-    # 時間も計算する　https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q11185745136
-    #　医師を選択するとリレーションされた予約日時がレスポンスを返すように。　https://selfnote.work/20200531/programming/django-rest-framework-basic7/
-    
 
     frequency1 = [{'frequency':1}]
     frequency2 = [{'frequency':2}]
@@ -59,17 +57,58 @@ class DoctorReservationReception(generics.ListCreateAPIView):
     elif frequency_value_list == frequency2:  
         reservation_frequency = 'W'
         print('隔週')
+        # 開始日から計算いる。
 
     elif frequency_value_list == frequency3:  
         reservation_frequency = 'MS'
         print('毎月')
+        # 開始日から計算いる
 
     else:  
         print('該当なし')
         reservation_frequency = 'D'
     
+    
 
-    datelist = pd.Series(pd.date_range('today', periods=14, freq=reservation_frequency).normalize(),
+    start_day_value_diclist = list(start_day_value)
+    end_day_value_diclist = list(end_day_value)
+
+    start_day_value_listconvert = [d.get('start_day') for d in start_day_value_diclist]
+    end_day_value_listconvert = [d.get('end_day') for d in end_day_value_diclist]
+
+    for start_days in start_day_value_listconvert :
+        print(start_days)
+
+    for end_days in end_day_value_listconvert :
+        print(end_days)
+
+
+    td = date.today()
+    two_weeks = td + timedelta(days=14)
+
+
+    if end_days < two_weeks:
+        end_pd = end_days
+
+    elif end_days > two_weeks:
+        end_pd = two_weeks
+        print('終わり日はまだ先')
+    
+    else:  
+        print('該当なし')
+
+
+    datelist = pd.Series(pd.date_range(start=start_days, end=end_pd, freq=reservation_frequency).normalize(),
           name='Date')
     print(datelist)
     print(datelist.dt.dayofweek)
+
+
+    
+
+
+    
+
+
+
+
