@@ -32,7 +32,10 @@ class DoctorReservationReceptionSerializer(serializers.ModelSerializer):
         model = DoctorReservationReception
         fields = ('doctor','day_of_the_week','frequency','start_day','end_day','start_time','end_time','active',)
         
-
-
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        # Access self.context here to add contextual data into ret
+        ret['reservation_dates'] = self.context[reservation_dates]
+        return ret
 
 

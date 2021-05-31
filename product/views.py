@@ -98,10 +98,20 @@ class DoctorReservationReception(generics.ListCreateAPIView):
         print('該当なし')
 
 
-    datelist = pd.Series(pd.date_range(start=start_days, end=end_pd, freq=reservation_frequency).normalize(),
+    reservation_datelist = pd.Series(pd.date_range(start=start_days, end=end_pd, freq=reservation_frequency).normalize(),
           name='Date')
-    print(datelist)
-    print(datelist.dt.dayofweek)
+    print(reservation_datelist)
+    print(reservation_datelist.dt.dayofweek)
+
+    # JSON変換してcontextにわたす必要あるかも。
+
+    reservation_dates = reservation_datelist.to_dict()
+    print(reservation_dates)
+
+    def get_serializer_context(self, reservation_dates):
+        context = super().get_serializer_context()
+        context['reservation_dates'] = reservation_dates
+        return context
 
 
     
