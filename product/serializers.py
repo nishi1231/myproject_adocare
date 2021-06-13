@@ -35,7 +35,8 @@ class DoctorReservationReceptionSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         # Access self.context here to add contextual data into ret
-        ret['reservation_dates'] = self.context[reservation_dates]
+        #ret['reservation_dates']= self.context
+        ret['reservation_dates']= self.context['reservation_dates']
         return ret
 
 

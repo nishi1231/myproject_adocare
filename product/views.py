@@ -103,18 +103,17 @@ class DoctorReservationReception(generics.ListCreateAPIView):
     print(reservation_datelist)
     print(reservation_datelist.dt.dayofweek)
 
-    # JSON変換してcontextにわたす必要あるかも。
 
     reservation_dates = reservation_datelist.to_dict()
     print(reservation_dates)
-
-    def get_serializer_context(self, reservation_dates):
-        context = super().get_serializer_context()
-        context['reservation_dates'] = reservation_dates
-        return context
-
-
     
+    def get_serializer_context(self, *args, **kwargs):
+        context = super().get_serializer_context(*args, **kwargs)
+        context['reservation_dates'] = self.reservation_dates
+        return context
+        
+
+
 
 
     
