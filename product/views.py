@@ -57,12 +57,12 @@ class DoctorReservationReception(generics.ListCreateAPIView):
     elif frequency_value_list == frequency2:  
         reservation_frequency = 'W'
         print('隔週')
-        # 開始日から計算いる。
+        
 
     elif frequency_value_list == frequency3:  
         reservation_frequency = 'MS'
         print('毎月')
-        # 開始日から計算いる
+        
 
     else:  
         print('該当なし')
@@ -92,7 +92,6 @@ class DoctorReservationReception(generics.ListCreateAPIView):
 
     elif end_days > two_weeks:
         end_pd = two_weeks
-        print('終わり日はまだ先')
     
     else:  
         print('該当なし')
@@ -104,9 +103,27 @@ class DoctorReservationReception(generics.ListCreateAPIView):
     print(reservation_datelist.dt.dayofweek)
 
 
-    reservation_dates = reservation_datelist.to_dict()
-    print(reservation_dates)
+    reservation_dates_dic = reservation_datelist.to_dict()
+    print(reservation_dates_dic)
     
+    daychange = {0:'date1', 1:'date2', 2:'date3', 3:'date4', 4:'date5', 5:'date6', 6:'date7', 7:'date8', 8:'date9', 9:'date10', 10:'date11', 11:'date12', 12:'date13', 13:'date14'}
+    print(daychange)
+    
+    dic_key_count = len(reservation_dates_dic.keys())
+    print(dic_key_count)
+
+
+    reservation_dates = {}
+
+    for key, value in daychange.items():
+        reservation_dates[value] = reservation_dates_dic[key]
+        
+        if len(reservation_dates.keys()) == dic_key_count :
+            break
+
+        print(reservation_dates)
+    
+
     def get_serializer_context(self, *args, **kwargs):
         context = super().get_serializer_context(*args, **kwargs)
         context['reservation_dates'] = self.reservation_dates
