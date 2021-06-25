@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from pandas.io.json import json_normalize
 from datetime import datetime, date, time, timedelta
+from django_filters import rest_framework as filters
 
 import pandas as pd
 import numpy as np
@@ -34,6 +35,15 @@ class Reservation(generics.ListCreateAPIView):
 class ReservationOtherChoice(generics.ListCreateAPIView):
     queryset = ReservationOtherChoice.objects.all()
     serializer_class = ReservationOtherChoiceSerializer
+
+
+
+class DoctorReservationReceptionFilter(filters.FilterSet):
+    doctor_id = filters.NumberFilter(name="doctor", lookup_expr='exact')
+    
+    class Meta:
+        model = DoctorReservationReception
+        fields = ['doctor'] 
 
 
 class DoctorReservationReception(generics.ListCreateAPIView):
